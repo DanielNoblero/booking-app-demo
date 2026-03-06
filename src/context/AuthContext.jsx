@@ -13,7 +13,7 @@ import {
     signOut,
     onAuthStateChanged,
     GoogleAuthProvider,
-    signInWithPopup,
+    signInWithRedirect
 } from "firebase/auth";
 import { auth, db } from "../firebaseConfig";
 import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
@@ -143,7 +143,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const loginWithGoogle = async () => {
-        const cred = await signInWithPopup(auth, googleProvider);
+        const cred = await signInWithRedirect(auth, googleProvider);
         await ensureUserDoc(cred.user);
     };
 

@@ -1,16 +1,53 @@
-# React + Vite
+Booking App Demo
+🇪🇸 Descripción del Proyecto
+Booking App Demo es una aplicación full-stack diseñada para la gestión eficiente de reservas de consultorios. Permite a los usuarios registrarse, visualizar disponibilidad y realizar reservas, mientras que los administradores cuentan con un panel dedicado para gestionar turnos, realizar reportes, backups y configurar precios de forma dinámica.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Arquitectura Técnica
+La aplicación sigue un flujo de datos reactivo utilizando el ecosistema de Google Cloud:
+Frontend: 
+    Desarrollado en React con Vite y estilizado con Tailwind CSS.
+    Autenticación: Gestión de usuarios mediante Firebase Auth (Google Provider).Base de Datos: 
+    Firestore para persistencia de datos en tiempo real.Backend: 
+    Firebase Cloud Functions (2nd Gen) para lógica compleja, automatización de correos, generación de reportes en Excel y backups.
+    
+🇺🇸 Project Description
+Booking App Demo is a full-stack application designed for efficient clinic/office appointment management. It enables users to sign up, view availability, and make bookings, while administrators have a dedicated dashboard to manage appointments, generate reports, perform backups, and dynamically configure pricing.
+Technical ArchitectureThe application follows a reactive data flow using the Google Cloud ecosystem:
+    Frontend: Built with React and Vite, styled with Tailwind CSS.Authentication: 
+    User management handled by Firebase Auth (Google Provider).Database: 
+    Firestore for real-time data persistence.Backend: 
+    Firebase Cloud Functions (2nd Gen) for complex backend logic, automated email notifications, Excel report generation, and automated backups.
 
-Currently, two official plugins are available:
+🛠 Dependencias Principales / Main Dependencies
+DependenciaUso / Purpose
+firebaseSDK para Auth y Firestore en el cliente.
+firebase-adminGestión de privilegios y operaciones de backend.
+firebase-functionsEjecución de lógica de servidor (serveless).
+nodemailerEnvío de correos electrónicos desde el backend.
+exceljsGeneración de reportes dinámicos en formato Excel.
+react-router-domEnrutamiento de la aplicación (HashRouter).
+date-fnsManipulación y formateo de fechas.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🚀 Instalación y Despliegue / Setup & Deployment
+Clonar el repositorio:
 
-## React Compiler
+Bash
+git clone https://github.com/DanielNoblero/booking-app-demo.git
+Instalar dependencias:
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+Bash
+npm install
+cd functions && npm install
+Configuración de Firebase:
+Crea un archivo .env en la raíz con tus credenciales de Firebase.
 
-## Expanding the ESLint configuration
+Despliegue:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Bash
+npm run deploy
+💡 Flujo de Trabajo / Workflow
+El usuario se autentica vía Firebase Auth.
+
+Firestore dispara listeners en tiempo real para mostrar disponibilidad.
+
+Al realizar una reserva, se invoca una Cloud Function que valida la lógica, actualiza la base de datos y dispara notificaciones.

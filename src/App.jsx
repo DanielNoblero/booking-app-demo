@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import useCambioPrecio from "./utils/useCambioPrecio";
 import PriceUpdateModal from "./components/PriceUpdateModal";
