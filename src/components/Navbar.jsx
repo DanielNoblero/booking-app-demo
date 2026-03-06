@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-
+import { useTranslation } from "react-i18next";
 import Logo from "../assets/Logo.png";
 
 export default function Navbar() {
+    const { t, i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [role, setRole] = useState(null);
     const [isProfileComplete, setIsProfileComplete] = useState(false);
@@ -86,7 +87,7 @@ export default function Navbar() {
     if (!ready) {
         return (
             <div className="text-center py-4 text-blue-700 font-semibold">
-                Preparando tu sesión...
+                {t('nav.cargando')}
             </div>
         );
     }
@@ -117,42 +118,62 @@ export default function Navbar() {
                         {user && isProfileComplete && (
                             <>
                                 <Link to="/" className={linkBase}>
-                                    Mis Reservar
+                                    {t('nav.misReservas')}
                                 </Link>
                                 <Link to="/reservas" className={linkBase}>
-                                    Reservar
+                                    {t('nav.reservar')}
                                 </Link>
                                 {role === "admin" && (
                                     <Link
                                         to="/admin"
                                         className="px-4 py-2 bg-yellow-200 text-yellow-900 font-semibold rounded-lg border border-yellow-400 shadow-sm hover:bg-yellow-300 transition"
                                     >
-                                        Admin
+                                        {t('nav.admin')}
                                     </Link>
                                 )}
                                 {role === "admin" && (
-                                    <Link to="/admin/backups" className="px-4 py-2 bg-yellow-200 text-yellow-900 font-semibold rounded-lg border border-yellow-400 shadow-sm hover:bg-yellow-300 transition">Reservas eliminadas</Link>
+                                    <Link to="/admin/backups" className="px-4 py-2 bg-yellow-200 text-yellow-900 font-semibold rounded-lg border border-yellow-400 shadow-sm hover:bg-yellow-300 transition">
+                                        {t('nav.backups')}
+                                    </Link>
                                 )}
                             </>
                         )}
 
                         {user ? (
                             <>
-                                <Link to="/perfil" className={linkBase}>Mi Perfil</Link>
+                                <Link to="/perfil" className={linkBase}>
+                                    {t('nav.perfil')}
+                                </Link>
 
                                 <button
                                     onClick={handleLogout}
                                     className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white font-semibold shadow transition"
                                 >
-                                    Cerrar sesión
+                                    {t('nav.logout')}
                                 </button>
                             </>
                         ) : (
                             <>
-                                <Link to="/login" className={linkBase}>Login</Link>
-                                <Link to="/register" className={linkBase}>Registro</Link>
+                                <Link to="/login" className={linkBase}>{t('nav.login')}</Link>
+                                <Link to="/register" className={linkBase}>{t('nav.registro')}</Link>
                             </>
+
                         )}
+                        <div className={linkBase}>
+                            <button
+                                onClick={() => i18n.changeLanguage('es')}
+                                className={i18n.language === 'es' ? "underline" : "hover:text-sky-600"}
+                            >
+                                ES
+                            </button>
+                            <span>|</span>
+                            <button
+                                onClick={() => i18n.changeLanguage('en')}
+                                className={i18n.language === 'en' ? "underline" : "hover:text-sky-600"}
+                            >
+                                EN
+                            </button>
+                        </div>
                     </div>
 
                     {/* --- MOBILE HAMBURGER --- */}
@@ -183,19 +204,19 @@ export default function Navbar() {
                             <div className="flex flex-col space-y-2 text-blue-900 font-semibold">
                                 {user && isProfileComplete && (
                                     <>
-                                    <Link
+                                        <Link
                                             to="/"
                                             onClick={() => setIsOpen(false)}
                                             className="w-full text-center py-2 bg-white/70 hover:bg-white rounded-lg transition shadow-sm"
                                         >
-                                            Mis Reservar
+                                            {t('nav.misReservas')}
                                         </Link>
                                         <Link
                                             to="/reservas"
                                             onClick={() => setIsOpen(false)}
                                             className="w-full text-center py-2 bg-white/70 hover:bg-white rounded-lg transition shadow-sm"
                                         >
-                                            Reservar
+                                            {t('nav.reservar')}
                                         </Link>
 
                                         {role === "admin" && (
@@ -204,7 +225,7 @@ export default function Navbar() {
                                                 onClick={() => setIsOpen(false)}
                                                 className="w-full text-center py-2 bg-white/70 hover:bg-white rounded-lg transition shadow-sm"
                                             >
-                                                Admin
+                                                {t('nav.admin')}
                                             </Link>
                                         )}
                                         {role === "admin" && (
@@ -220,14 +241,14 @@ export default function Navbar() {
                                             onClick={() => setIsOpen(false)}
                                             className="w-full text-center py-2 bg-white/70 hover:bg-white rounded-lg transition shadow-sm"
                                         >
-                                            Mi Perfil
+                                            {t('nav.perfil')}
                                         </Link>
 
                                         <button
                                             onClick={handleLogout}
                                             className="w-full mt-1 bg-red-500 hover:bg-red-600 py-2 rounded-lg text-white font-semibold shadow-sm transition"
                                         >
-                                            Cerrar sesión
+                                            {t('nav.logout')}
                                         </button>
                                     </>
                                 ) : (
@@ -237,7 +258,7 @@ export default function Navbar() {
                                             onClick={() => setIsOpen(false)}
                                             className="w-full text-center py-2 bg-white/70 hover:bg-white rounded-lg transition shadow-sm"
                                         >
-                                            Login
+                                            {t('nav.login')}
                                         </Link>
 
                                         <Link
@@ -245,13 +266,32 @@ export default function Navbar() {
                                             onClick={() => setIsOpen(false)}
                                             className="w-full text-center py-2 bg-white/70 hover:bg-white rounded-lg transition shadow-sm"
                                         >
-                                            Registro
+                                            {t('nav.registro')}
                                         </Link>
                                     </>
+
                                 )}
+                                <div className="w-full text-center py-2 bg-white/70 hover:bg-white rounded-lg transition shadow-s">
+                                    <button
+                                        onClick={() => i18n.changeLanguage('es')}
+                                        className={i18n.language === 'es' ? "underline" : "hover:text-sky-600"}
+                                    >
+                                        ES
+                                    </button>
+                                    <span>|</span>
+                                    <button
+                                        onClick={() => i18n.changeLanguage('en')}
+                                        className={i18n.language === 'en' ? "underline" : "hover:text-sky-600"}
+                                    >
+                                        EN
+                                    </button>
+                                </div>
                             </div>
+
                         </div>
+
                     </div>
+
                 )}
 
             </nav>

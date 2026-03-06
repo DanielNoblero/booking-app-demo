@@ -5,8 +5,10 @@ import { db } from "../firebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { updateEmail } from "firebase/auth";
+import { useTranslation } from "react-i18next";
 
 const Perfil = () => {
+    const { t } = useTranslation();
     const { user } = useAuth();
     const navigate = useNavigate();
 
@@ -128,7 +130,7 @@ const Perfil = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <p className="text-gray-700 text-lg">Cargando perfil...</p>
+                <p className="text-gray-700 text-lg">{t('perfil.cargando')}</p>
             </div>
         );
     }
@@ -138,7 +140,7 @@ const Perfil = () => {
             <div className="w-full max-w-xl bg-white p-6 sm:p-8 rounded-xl shadow-xl">
 
                 <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 text-gray-800">
-                    Completar Perfil
+                    {t('perfil.titulo')}
                 </h2>
 
                 {errorMsg && (
@@ -148,7 +150,7 @@ const Perfil = () => {
                 <form onSubmit={handleGuardar} className="space-y-5">
 
                     <div>
-                        <label className="block font-medium mb-1">Nombre</label>
+                        <label className="block font-medium mb-1">{t('perfil.nombre')}</label>
                         <input
                             type="text"
                             name="nombre"
@@ -160,7 +162,7 @@ const Perfil = () => {
                     </div>
 
                     <div>
-                        <label className="block font-medium mb-1">Apellido</label>
+                        <label className="block font-medium mb-1">{t('perfil.apellido')}</label>
                         <input
                             type="text"
                             name="apellido"
@@ -172,7 +174,7 @@ const Perfil = () => {
                     </div>
 
                     <div>
-                        <label className="block font-medium mb-1">Teléfono</label>
+                        <label className="block font-medium mb-1">{t('perfil.telefono')}</label>
                         <input
                             type="text"
                             name="telefono"
@@ -184,7 +186,7 @@ const Perfil = () => {
                     </div>
 
                     <div>
-                        <label className="block font-medium mb-1">Email</label>
+                        <label className="block font-medium mb-1">{t('perfil.email')}</label>
                         <input
                             type="email"
                             name="email"
@@ -194,7 +196,7 @@ const Perfil = () => {
                             className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
                         />
                         <p className="text-xs text-gray-500 mt-1">
-                            Si cambias el email, puede pedirse que vuelvas a iniciar sesión.
+                            {t('perfil.emailNota')}
                         </p>
                     </div>
 
@@ -203,7 +205,7 @@ const Perfil = () => {
                         disabled={saving}
                         className="w-full py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 transition"
                     >
-                        {saving ? "Guardando..." : "Guardar Perfil"}
+                        {saving ? t('perfil.guardando') : t('perfil.guardar')}
                     </button>
 
                 </form>

@@ -1,0 +1,91 @@
+{
+    "nav": {
+        "misReservas": "My Bookings",
+        "reservar": "Book",
+        "admin": "Admin",
+        "backups": "Deleted Bookings",
+        "perfil": "My Profile",
+        "logout": "Logout",
+        "login": "Login",
+        "registro": "Register",
+        "cargando": "Preparing your session..."
+    },
+    "perfil": {
+        "titulo": "Complete Profile",
+        "cargando": "Loading profile...",
+        "nombre": "First Name",
+        "apellido": "Last Name",
+        "telefono": "Phone",
+        "email": "Email",
+        "emailNota": "If you change your email, you may be asked to log in again.",
+        "guardar": "Save Profile",
+        "guardando": "Saving...",
+        "errorAuth": "You must log out and log in again to change your email.",
+        "errorGeneral": "Could not change email.",
+        "errorGuardar": "There was an error saving the profile."
+    },
+    "register": {
+        "titulo": "Create account",
+        "email": "Email address",
+        "password": "Password",
+        "btnRegistrar": "Sign up",
+        "btnRegistrando": "Signing up...",
+        "o": "or",
+        "btnGoogle": "Continue with Google",
+        "btnGoogleLoading": "Continuing...",
+        "yaTieneCuenta": "Already have an account? ",
+        "iniciarSesion": "Log in",
+        "errorEmail": "Error: The email is already registered. Try logging in."
+    },
+    "dashboard": {
+        "titulo": "Dashboard",
+        "subtitulo": "Hello, {{nombre}}",
+        "subtitulo.descripcion": "Here you can see your upcoming appointments, history, and outstanding debts.",
+        "subtitulo.profesional": "Professional",
+        "cards": {
+            "deudaSemana": "This week's debt",
+            "deudaMes": "Monthly debt",
+            "deudaMesAnterior": "{{mes}} debt",
+            "ayudaSemana": "Sum of all unpaid consultations for the current week.",
+            "ayudaMes": "Includes all unpaid appointments for the month."
+        },
+        "vista": {
+            "semana": "Week",
+            "mes": "Month",
+            "mesSiguiente": "Next month"
+        },
+        "lista": {
+            "consultorio": "Office",
+            "precio": "Price",
+            "pagado": "Paid",
+            "pendiente": "Pending",
+            "cancelar": "Cancel",
+            "vacio": {
+                "semana": "🎉 You have no appointments this week",
+                "mes": "🎉 You have no appointments this month",
+                "mesSiguiente": "🎉 You have no appointments next month"
+            },
+            "agendar": "Book one now"
+        },
+        "historial": "History ({{count}})",
+        "historial.vacio": "No past appointments found.",
+        "boton": {
+            "agendar": "Schedule new appointment",
+            "cerrarSesion": "Log out"
+        },
+        "modales": {
+            "cancelar": {
+                "titulo": "⚠️ Confirm Cancellation",
+                "mensaje": "Are you sure you want to cancel the following appointment?",
+                "btnNo": "No, go back",
+                "btnSi": "Yes, cancel",
+                "alerta": "Cancellations are only allowed with more than 24 hours' notice.",
+                "reserva": {
+                    "consultorio": "Office",
+                    "hora": "Time",
+                    "costo": "Cost"
+                }
+            }
+        }
+    }
+}

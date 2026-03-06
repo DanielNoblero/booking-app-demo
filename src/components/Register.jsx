@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -24,11 +26,10 @@ const Register = () => {
         setLoading(true);
         try {
             await register(email, password);
-            // Redirigir a perfil después de un nuevo registro
-            navigate("/perfil", { replace: true }); 
+            navigate("/perfil", { replace: true });
         } catch (err) {
-            // Este catch atrapará el error de "auth/email-already-in-use"
-            setError("Error: El correo electrónico ya está registrado. Intenta iniciar sesión.");
+            // Traducimos el error específico
+            setError(t('register.errorEmail'));
         } finally {
             setLoading(false);
         }
@@ -41,7 +42,7 @@ const Register = () => {
             await loginWithGoogle();
             // Google SignIn maneja tanto el login como el registro inicial.
             // Redirigimos a la raíz, y PrivateRoute se encargará de enviarlo a /perfil si es nuevo o incompleto.
-            navigate("/", { replace: true }); 
+            navigate("/", { replace: true });
         } catch (err) {
             setError(err.message);
         } finally {
@@ -52,8 +53,11 @@ const Register = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
             <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-bold text-center mb-6 text-blue-800">Crear cuenta</h2>
+                <h2 className="text-2xl font-bold text-center mb-6 text-blue-800">
+                    {t('register.titulo')}
+                </h2>
 
+                {/* Error Box */}
                 {error && (
                     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 text-sm" role="alert">
                         {error}
@@ -63,7 +67,7 @@ const Register = () => {
                 <form onSubmit={handleRegister} className="flex flex-col gap-4">
                     <input
                         type="email"
-                        placeholder="Correo electrónico"
+                        placeholder={t('register.email')} // placeholder traducido
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -72,7 +76,7 @@ const Register = () => {
                     />
                     <input
                         type="password"
-                        placeholder="Contraseña"
+                        placeholder={t('register.password')}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -83,35 +87,29 @@ const Register = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`bg-blue-700 text-white py-3 rounded-lg font-semibold transition ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-800'}`}
+                        className="bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition"
                     >
-                        {loading ? "Registrando..." : "Registrarse"}
+                        {loading ? t('register.btnRegistrando') : t('register.btnRegistrar')}
                     </button>
 
                     <div className="relative flex items-center justify-center my-4">
-                        <span className="absolute bg-white px-2 text-gray-500 text-sm">o</span>
+                        <span className="absolute bg-white px-2 text-gray-500 text-sm">{t('register.o')}</span>
                         <hr className="w-full border-gray-300" />
                     </div>
 
                     <button
                         type="button"
                         onClick={handleGoogleSignIn}
-                        disabled={loading}
-                        className={`w-full flex items-center justify-center border py-3 rounded-lg transition font-medium text-gray-700 ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}`}
+                        className="w-full flex items-center justify-center border py-3 rounded-lg hover:bg-gray-100 transition"
                     >
-                        <img
-                            src="https://www.svgrepo.com/show/475656/google-color.svg"
-                            alt="Google"
-                            className="w-5 h-5 mr-2"
-                        />
-                        {loading ? "Continuando..." : "Continuar con Google"}
+                        {loading ? t('register.btnGoogleLoading') : t('register.btnGoogle')}
                     </button>
                 </form>
 
                 <p className="text-center text-sm mt-6 text-gray-600">
-                    ¿Ya tienes cuenta?{" "}
+                    {t('register.yaTieneCuenta')}
                     <Link to="/login" className="text-blue-600 font-medium hover:underline">
-                        Iniciar sesión
+                        {t('register.iniciarSesion')}
                     </Link>
                 </p>
             </div>

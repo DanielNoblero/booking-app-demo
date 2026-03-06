@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { getMonday, getSunday, eliminarReserva } from "../utils/reservasUtils";
 import ModalRecurrente from "../components/ModalRecurrente";
+import { useTranslation } from "react-i18next";
 
 const CONFIG_DOC_ID = "precioConsulta";
 
@@ -34,45 +35,45 @@ const Notification = ({ tipo, mensaje }) => (
     </div>
 );
 
-const CancelarModal = ({ isOpen, onClose, onConfirm, reserva }) => {
+const CancelarModal = ({ isOpen, onClose, onConfirm, reserva, t }) => {
     if (!isOpen || !reserva) return null;
 
     return (
         <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
                 <h3 className="text-2xl font-extrabold mb-3 text-red-600 border-b pb-2">
-                    ⚠️ Confirmar Cancelación
+                    {t('dashboard.modales.cancelar.titulo')}
                 </h3>
                 <p className="text-gray-700 mb-4">
-                    ¿Estás seguro de que deseas cancelar la siguiente reserva?
+                    {t('dashboard.modales.cancelar.mensaje')}
                 </p>
                 <div className="bg-red-50 p-4 rounded-lg border border-red-200 text-sm font-medium">
                     <p>
-                        🗓 Consultorio {reserva.consultorio}: {reserva.fecha}
+                        🗓 {t('dashboard.modales.cancelar.reserva.consultorio')}: {reserva.consultorio}
                     </p>
                     <p>
-                        🕒 Horario: {reserva.horaInicio} - {reserva.horaFin}
+                        🕒 {t('dashboard.modales.cancelar.reserva.hora')}: {reserva.horaInicio} - {reserva.horaFin}
                     </p>
                     <p className="mt-1">
-                        Costo: ${formatCurrency(reserva.precio)}
+                        {t('dashboard.modales.cancelar.reserva.costo')}: ${formatCurrency(reserva.precio)}
                     </p>
                 </div>
                 <p className="mt-3 text-sm text-red-700 font-semibold">
-                    Solo se permiten cancelaciones con más de 24 horas de
-                    antelación.
+                    {t('dashboard.modales.cancelar.alerta')}
+
                 </p>
                 <div className="flex justify-end mt-6 gap-3">
                     <button
                         onClick={onClose}
                         className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition font-medium"
                     >
-                        No, volver
+                        {t('dashboard.modales.cancelar.btnNo')}
                     </button>
                     <button
                         onClick={onConfirm}
                         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-semibold shadow-md"
                     >
-                        Sí, cancelar
+                        {t('dashboard.modales.cancelar.btnSi')}
                     </button>
                 </div>
             </div>
@@ -80,31 +81,31 @@ const CancelarModal = ({ isOpen, onClose, onConfirm, reserva }) => {
     );
 };
 
-const DeudaCards = ({ totalSemana, totalMes, totalMesAnterior, nombreMesAnterior }) => (
+const DeudaCards = ({ totalSemana, totalMes, totalMesAnterior, nombreMesAnterior, t }) => (
     <section className="w-full grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Semana */}
         <div className="bg-white rounded-2xl shadow-lg border border-sky-100 p-4">
-            <span className="text-xs font-semibold uppercase tracking-wide text-sky-600">Deuda de esta semana</span>
+            <span className="text-xs font-semibold uppercase tracking-wide text-sky-600">{t('dashboard.cards.deudaSemana')}</span>
             <p className="text-3xl font-extrabold">
                 ${formatCurrency(totalSemana)}
             </p>
-            <p className="text-xs text-slate-500">Suma de todas las consultas no pagas dentro de la semana actual.</p>
+            <p className="text-xs text-slate-500">{t('dashboard.cards.ayudaSemana')}</p>
         </div>
 
         {/* Mes actual */}
         <div className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-4">
-            <span className="text-xs font-semibold uppercase tracking-wide text-emerald-600">Deuda del mes</span>
+            <span className="text-xs font-semibold uppercase tracking-wide text-emerald-600">{t('dashboard.cards.deudaMes')}</span>
             <p className="text-3xl font-extrabold">
                 ${formatCurrency(totalMes)}
             </p>
-            <p className="text-xs text-slate-500">Incluye todas las reservas pendientes de pago del mes.</p>
+            <p className="text-xs text-slate-500">{t('dashboard.cards.ayudaMes')}</p>
         </div>
 
         {/* Mes anterior (solo si hay deuda) */}
         {totalMesAnterior > 0 && (
             <div className="bg-amber-50 rounded-2xl shadow-lg border border-amber-200 p-4">
                 <span className="text-xs font-semibold text-amber-700">
-                    Deuda {nombreMesAnterior}
+                    {t('dashboard.cards.deudaMesAnterior', { mes: nombreMesAnterior })}
                 </span>
                 <p className="text-3xl font-extrabold text-amber-900">
                     ${formatCurrency(totalMesAnterior)}
@@ -118,6 +119,7 @@ const DeudaCards = ({ totalSemana, totalMes, totalMesAnterior, nombreMesAnterior
 // DASHBOARD
 // ────────────────────────────────────────────────
 const Dashboard = () => {
+
     const meses = [
         "Enero",
         "Febrero",
@@ -132,7 +134,7 @@ const Dashboard = () => {
         "Noviembre",
         "Diciembre",
     ];
-
+    const { t } = useTranslation();
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -434,11 +436,11 @@ const Dashboard = () => {
             ? null
             : r.pagado ? (
                 <span className="text-emerald-600 font-semibold flex items-center gap-1">
-                    Pagado ✅
+                    {t('dashboard.lista.pagado')}
                 </span>
             ) : (
                 <span className="text-amber-700 font-semibold flex items-center gap-1">
-                    Pendiente de pago ⚠️
+                    {t('dashboard.lista.pendiente')}
                 </span>
             );
 
@@ -459,12 +461,12 @@ const Dashboard = () => {
                     <p className="font-semibold text-slate-900">
                         🗓 {r.fecha} {r.horaInicio}-{r.horaFin}
                         <span className="text-sky-600 ml-2">
-                            (Consultorio {r.consultorio})
+                            ({t('dashboard.lista.consultorio')} {r.consultorio})
                         </span>
                     </p>
 
                     <p className="text-slate-700">
-                        Precio: ${formatCurrency(r.precio)}
+                        {t('dashboard.lista.precio')}: ${formatCurrency(r.precio)}
                         {!esAdmin && <> | {estadoPago}</>}
                     </p>
                 </div>
@@ -480,7 +482,7 @@ const Dashboard = () => {
                         }}
                         className="mt-3 sm:mt-0 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition shadow-md text-sm font-semibold"
                     >
-                        ❌ Cancelar
+                        ❌ {t('dashboard.lista.cancelar')}
                     </button>
                 )}
             </li>
@@ -496,14 +498,13 @@ const Dashboard = () => {
                 <section className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
                         <p className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide bg-sky-100 text-sky-700 mb-2">
-                            Panel de control
+                            {t('dashboard.titulo')}
                         </p>
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">
-                            Hola, {nombreCompleto}
+                            {t('dashboard.subtitulo', { nombre: nombreCompleto })}
                         </h1>
                         <p className="text-sm sm:text-base text-slate-600 mt-2">
-                            Aquí puedes ver tus próximas reservas, historial y
-                            deudas pendientes.
+                            {t('dashboard.subtitulo.descripcion')}
                         </p>
                     </div>
 
@@ -516,13 +517,13 @@ const Dashboard = () => {
                                 {nombreCompleto}
                             </span>
                             <span className="text-xs text-slate-500">
-                                Profesional activo
+                                {t('dashboard.subtitulo.profesional')}
                             </span>
                         </div>
                     </div>
                 </section>
 
-                <DeudaCards totalSemana={totalSemana} totalMes={totalMes} totalMesAnterior={totalMesAnterior} nombreMesAnterior={nombreMesAnterior} />
+                <DeudaCards t={t} totalSemana={totalSemana} totalMes={totalMes} totalMesAnterior={totalMesAnterior} nombreMesAnterior={nombreMesAnterior} />
 
                 <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg border border-sky-100 p-6">
@@ -535,7 +536,7 @@ const Dashboard = () => {
                                     : "bg-white border border-sky-300 text-sky-700"
                                     }`}
                             >
-                                Semana actual
+                                {t('dashboard.vista.semana')}
                             </button>
 
                             <button
@@ -545,7 +546,7 @@ const Dashboard = () => {
                                     : "bg-white border border-sky-300 text-sky-700"
                                     }`}
                             >
-                                Mes actual
+                                {t('dashboard.vista.mes')}
                             </button>
 
                             <button
@@ -555,7 +556,7 @@ const Dashboard = () => {
                                     : "bg-white border border-sky-300 text-sky-700"
                                     }`}
                             >
-                                Mes siguiente
+                                {t('dashboard.vista.mesSiguiente')}
                             </button>
                         </div>
 
@@ -590,14 +591,14 @@ const Dashboard = () => {
                         {vista === "semana" && mostrarSemana && (
                             reservasSemanaMostrar.length === 0 ? (
                                 <div className="p-4 rounded-xl bg-sky-50 text-sky-800 text-sm sm:text-base">
-                                    🎉 No tienes reservas esta semana.{" "}
+                                    🎉 {t('dashboard.lista.vacio.semana')}.{" "}
                                     <button
                                         onClick={() =>
                                             navigate("/reservas")
                                         }
                                         className="font-semibold underline hover:text-sky-900"
                                     >
-                                        Agendar una ahora
+                                        {t('dashboard.lista.agendar')}
                                     </button>
                                     .
                                 </div>
@@ -618,14 +619,14 @@ const Dashboard = () => {
                                 ))}
                                 {reservasMes.plano.length === 0 && (
                                     <div className="p-4 rounded-xl bg-sky-50 text-sky-800 text-sm sm:text-base">
-                                        🎉 No tienes reservas este mes.{" "}
+                                        🎉 {t('dashboard.lista.vacio.mes')}.{" "}
                                         <button
                                             onClick={() =>
                                                 navigate("/reservas")
                                             }
                                             className="font-semibold underline hover:text-sky-900"
                                         >
-                                            Agendar una ahora
+                                            {t('dashboard.lista.agendar')}
                                         </button>
                                         .
                                     </div>
@@ -640,14 +641,14 @@ const Dashboard = () => {
                                 ))}
                                 {reservasMesSiguiente.length === 0 && (
                                     <div className="p-4 rounded-xl bg-sky-50 text-sky-800 text-sm sm:text-base">
-                                        🎉 No tienes reservas ese mes.{" "}
+                                        🎉 {t('dashboard.lista.vacio.mesSiguiente')}.{" "}
                                         <button
                                             onClick={() =>
                                                 navigate("/reservas")
                                             }
                                             className="font-semibold underline hover:text-sky-900"
                                         >
-                                            Agendar una ahora
+                                            {t('dashboard.lista.agendar')}
                                         </button>
                                         .
                                     </div>
@@ -660,7 +661,7 @@ const Dashboard = () => {
                     <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-6">
                         <div className="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
                             <h2 className="text-xl sm:text-2xl font-bold text-slate-800">
-                                Historial ({reservasPasadas.length})
+                                {t('dashboard.historial', { count: reservasPasadas.length })}
                             </h2>
                             <button
                                 onClick={() =>
@@ -677,7 +678,7 @@ const Dashboard = () => {
                         {mostrarPasadas &&
                             (reservasPasadas.length === 0 ? (
                                 <p className="text-sm sm:text-base text-slate-500">
-                                    Aún no tienes reservas en tu historial.
+                                    {t('dashboard.historial.vacio')}
                                 </p>
                             ) : (
                                 <ul className="space-y-3">
@@ -694,19 +695,20 @@ const Dashboard = () => {
                         onClick={() => navigate("/reservas")}
                         className="flex-1 bg-sky-600 text-white px-6 py-3 rounded-xl hover:bg-sky-700 transition shadow-lg font-semibold text-base sm:text-lg flex items-center justify-center gap-2"
                     >
-                        Agendar nueva reserva
+                        {t('dashboard.boton.agendar')}
                     </button>
 
                     <button
                         onClick={logout}
                         className="flex-1 bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition shadow-lg font-semibold text-base sm:text-lg flex items-center justify-center gap-2"
                     >
-                        Cerrar sesión
+                        {t('dashboard.boton.cerrarSesion')}
                     </button>
                 </section>
             </main>
 
             <CancelarModal
+            t={t}
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onConfirm={handleCancelar}

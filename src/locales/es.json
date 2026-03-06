@@ -1,0 +1,91 @@
+{
+    "nav": {
+        "misReservas": "Mis Reservas",
+        "reservar": "Reservar",
+        "admin": "Admin",
+        "backups": "Reservas eliminadas",
+        "perfil": "Mi Perfil",
+        "logout": "Cerrar sesión",
+        "login": "Login",
+        "registro": "Registro",
+        "cargando": "Preparando tu sesión..."
+    },
+    "perfil": {
+        "titulo": "Completar Perfil",
+        "cargando": "Cargando perfil...",
+        "nombre": "Nombre",
+        "apellido": "Apellido",
+        "telefono": "Teléfono",
+        "email": "Email",
+        "emailNota": "Si cambias el email, puede pedirse que vuelvas a iniciar sesión.",
+        "guardar": "Guardar Perfil",
+        "guardando": "Guardando...",
+        "errorAuth": "Debes cerrar sesión y volver a iniciar sesión para cambiar tu email.",
+        "errorGeneral": "No se pudo cambiar el email.",
+        "errorGuardar": "Hubo un error guardando el perfil."
+    },
+    "register": {
+        "titulo": "Crear cuenta",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "btnRegistrar": "Registrarse",
+        "btnRegistrando": "Registrando...",
+        "o": "o",
+        "btnGoogle": "Continuar con Google",
+        "btnGoogleLoading": "Continuando...",
+        "yaTieneCuenta": "¿Ya tienes cuenta? ",
+        "iniciarSesion": "Iniciar sesión",
+        "errorEmail": "Error: El correo electrónico ya está registrado. Intenta iniciar sesión."
+    },
+    "dashboard": {
+        "titulo": "Dashboard",
+        "subtitulo": "Hola, {{nombre}}",
+        "subtitulo.descripcion": "Aquí puedes ver tus próximas reservas, historial y deudas pendientes.",
+        "subtitulo.profesional": "Profesional",
+        "cards": {
+            "deudaSemana": "Deuda de esta semana",
+            "deudaMes": "Deuda del mes",
+            "deudaMesAnterior": "Deuda {{mes}}",
+            "ayudaSemana": "Suma de todas las consultas no pagas de la semana.",
+            "ayudaMes": "Incluye todas las reservas pendientes del mes."
+        },
+        "vista": {
+            "semana": "Semana",
+            "mes": "Mes",
+            "mesSiguiente": "Mes siguiente"
+        },
+        "lista": {
+            "consultorio": "Consultorio",
+            "precio": "Precio",
+            "pagado": "Pagado",
+            "pendiente": "Pendiente",
+            "cancelar": "Cancelar",
+            "vacio": {
+                "semana": "🎉 No tienes reservas esta semana",
+                "mes": "🎉 No tienes reservas este mes",
+                "mesSiguiente": "🎉 No tienes reservas el próximo mes"
+            },
+            "agendar": "Agendar una ahora"
+        },
+        "historial": "Historial ({{count}})",
+        "historial.vacio": "No hay historial previo.",
+        "boton": {
+            "agendar": "Agendar nueva reserva",
+            "cerrarSesion": "Cerrar sesión"
+        },
+        "modales": {
+            "cancelar": {
+                "titulo": "⚠️ Confirmar Cancelación",
+                "mensaje": "¿Estás seguro de que quieres cancelar esta reserva?",
+                "btnNo": "No, volver",
+                "btnSi": "Sí, cancelar",
+                "alerta": "Solo se permiten cancelaciones con más de 24 horas de antelación.",
+                "reserva": {
+                    "consultorio": "Consultorio",
+                    "hora": "Hora",
+                    "costo": "Costo"
+                }
+            }
+        }
+    }
+}
