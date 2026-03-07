@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { confirmarReserva } from "../utils/reservasUtils";
+import { useTranslation } from "react-i18next";
+
 
 const ConfirmarReservaModal = ({
     reservaAConfirmar,
@@ -18,7 +20,7 @@ const ConfirmarReservaModal = ({
     const [tipoReserva, setTipoReserva] = useState("Ocasional");
     const [recurrenciaTipo, setRecurrenciaTipo] = useState("Semanal");
     const [recurrenciaCantidad, setRecurrenciaCantidad] = useState(1);
-
+const { t } = useTranslation();
     // 🚫 Para evitar doble / triple envío
     const [isConfirming, setIsConfirming] = useState(false);
 
@@ -66,7 +68,7 @@ const ConfirmarReservaModal = ({
             <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl border border-gray-200 animate-slideUp">
 
                 <h2 className="text-2xl font-extrabold text-blue-800 text-center mb-6 tracking-wide">
-                    Confirmar Reserva
+                    {t('reservas.boton.confirmar')}
                 </h2>
 
                 {/* INFO PRINCIPAL */}
@@ -136,7 +138,7 @@ const ConfirmarReservaModal = ({
                                     text-gray-700 font-semibold transition"
                         disabled={isConfirming}
                     >
-                        Cancelar
+                        {t('botones.cancelar')}
                     </button>
                     <button
                         onClick={confirmar}
@@ -147,7 +149,7 @@ const ConfirmarReservaModal = ({
                             }`}
                         disabled={isConfirming}
                     >
-                        {isConfirming ? "Confirmando..." : "Confirmar"}
+                        {isConfirming ? t('botones.confirmando') : t('botones.confirmar')}
                     </button>
                 </div>
             </div>

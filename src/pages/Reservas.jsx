@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getISOWeek } from "date-fns";
-
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 import { getPreciosConfig  } from "../utils/precioUtils";
 import { generarHorarios } from "../utils/horariosUtils";
@@ -14,6 +14,7 @@ import ConfirmarReservaModal from "../components/ConfirmarReservaModal";
 import CancelarReservaModal from "../components/CancelarReservaModal";
 
 const Reservas = () => {
+    const { t } = useTranslation();
     const { user } = useAuth();
     const navigate = useNavigate();
 
@@ -239,7 +240,7 @@ const Reservas = () => {
                     </button>
 
                     <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-800">
-                        Reserva tu <span className="block sm:inline">Consultorio</span>
+                        <span className="block sm:inline">{t('reservas.titulo')}</span>
                     </h2>
                 </div>
 

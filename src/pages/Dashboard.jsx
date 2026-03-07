@@ -103,15 +103,16 @@ const DeudaCards = ({ totalSemana, totalMes, totalMesAnterior, nombreMesAnterior
 
         {/* Mes anterior (solo si hay deuda) */}
         {totalMesAnterior > 0 && (
-            <div className="bg-amber-50 rounded-2xl shadow-lg border border-amber-200 p-4">
-                <span className="text-xs font-semibold text-amber-700">
-                    {t('dashboard.cards.deudaMesAnterior', { mes: nombreMesAnterior })}
-                </span>
-                <p className="text-3xl font-extrabold text-amber-900">
-                    ${formatCurrency(totalMesAnterior)}
-                </p>
-            </div>
-        )}
+    <div className="bg-amber-50 rounded-2xl shadow-lg border border-amber-200 p-4">
+        <span className="text-xs font-semibold text-amber-700">
+            {/* Traducir aquí también */}
+            {t('dashboard.cards.deudaMesAnterior', { mes: t(`meses.${nombreMesAnterior}`) })}
+        </span>
+        <p className="text-3xl font-extrabold text-amber-900">
+            ${formatCurrency(totalMesAnterior)}
+        </p>
+    </div>
+)}
     </section>
 );
 
@@ -120,21 +121,7 @@ const DeudaCards = ({ totalSemana, totalMes, totalMesAnterior, nombreMesAnterior
 // ────────────────────────────────────────────────
 const Dashboard = () => {
 
-    const meses = [
-        "Enero",
-        "Febrero",
-        "Marzo",
-        "Abril",
-        "Mayo",
-        "Junio",
-        "Julio",
-        "Agosto",
-        "Septiembre",
-        "Octubre",
-        "Noviembre",
-        "Diciembre",
-    ];
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -211,9 +198,9 @@ const Dashboard = () => {
             // ───────────────────────────────────────────────
             // CÁLCULO DEUDA SEMANAL
             // ───────────────────────────────────────────────
-            const hoySemana = new Date();
-            const lunesSemana = getMonday(hoySemana);
-            const domingoSemana = getSunday(hoySemana);
+            const hoyCalc = new Date();
+            const lunesSemana = getMonday(hoyCalc);
+            const domingoSemana = getSunday(hoyCalc);
 
             const deudaSemana = reservasArray
                 .filter((r) => {
@@ -229,12 +216,25 @@ const Dashboard = () => {
             setTotalSemana(deudaSemana);
 
             // ───────────────────────────────────────────────
-            // CÁLCULO DEUDA MENSUAL
+            // CÁLCULO FECHAS E ÍNDICES DE MESES (CORREGIDO)
             // ───────────────────────────────────────────────
-            const hoyCalc = new Date();
             const mesCalc = hoyCalc.getMonth();
             const añoCalc = hoyCalc.getFullYear();
 
+            // Guardamos solo el índice para que el componente traduzca en el render
+            setNombreMesActual(mesCalc); 
+            
+            const mesAnteriorIdx = mesCalc === 0 ? 11 : mesCalc - 1;
+            const añoMesAnterior = mesCalc === 0 ? añoCalc - 1 : añoCalc;
+            setNombreMesAnterior(mesAnteriorIdx);
+
+            const nextMonthIdx = (mesCalc + 1) % 12;
+            const nextYear = mesCalc === 11 ? añoCalc + 1 : añoCalc;
+            setNombreMesSiguiente(nextMonthIdx);
+
+            // ───────────────────────────────────────────────
+            // CÁLCULO DEUDA MES ACTUAL Y ANTERIOR
+            // ───────────────────────────────────────────────
             const deudaMes = reservasArray
                 .filter((r) => {
                     const fecha = new Date(`${r.fecha}T00:00:00`);
@@ -247,50 +247,33 @@ const Dashboard = () => {
                 .reduce((acc, r) => acc + Number(r.precio || 0), 0);
 
             setTotalMes(deudaMes);
-            // ───────────────────────────────────────────────
-            // CÁLCULO DEUDA MES ANTERIOR
-            // ───────────────────────────────────────────────
-            const mesAnterior =
-                mesCalc === 0 ? 11 : mesCalc - 1;
 
-            const añoMesAnterior =
-                mesCalc === 0 ? añoCalc - 1 : añoCalc;
-
-            setNombreMesAnterior(meses[mesAnterior]);
-
-            const deudaMesAnterior = reservasArray
+            const deudaAnterior = reservasArray
                 .filter((r) => {
                     const fecha = new Date(`${r.fecha}T00:00:00`);
                     return (
-                        fecha.getMonth() === mesAnterior &&
+                        fecha.getMonth() === mesAnteriorIdx &&
                         fecha.getFullYear() === añoMesAnterior &&
                         !r.pagado
                     );
                 })
                 .reduce((acc, r) => acc + Number(r.precio || 0), 0);
 
-            setTotalMesAnterior(deudaMesAnterior);
-            // ───────────────────────────────────────────────
-            // MES ACTUAL / SIGUIENTE
-            // ───────────────────────────────────────────────
-            const hoy = new Date();
-            const year = hoy.getFullYear();
-            const month = hoy.getMonth();
+            setTotalMesAnterior(deudaAnterior);
 
-            setNombreMesActual(meses[month]);
-            const nextMonth = (month + 1) % 12;
-            setNombreMesSiguiente(meses[nextMonth]);
-
+            // ───────────────────────────────────────────────
+            // FILTRADO DE VISTAS (MES ACTUAL / SIGUIENTE)
+            // ───────────────────────────────────────────────
             const reservasMesActual = reservasArray.filter((r) => {
                 const f = new Date(`${r.fecha}T00:00:00`);
-                return f.getMonth() === month && f.getFullYear() === year;
+                return f.getMonth() === mesCalc && f.getFullYear() === añoCalc;
             });
 
-            const total = reservasMesActual.reduce(
+            const totalVista = reservasMesActual.reduce(
                 (acc, r) => acc + (r.precio || 0),
                 0
             );
-            setTotalMesVista(total);
+            setTotalMesVista(totalVista);
 
             const semanasAgrupadas = {};
             reservasMesActual.forEach((r) => {
@@ -305,11 +288,10 @@ const Dashboard = () => {
                 plano: reservasMesActual,
             });
 
-            const nextYear = month === 11 ? year + 1 : year;
             const reservasSiguiente = reservasArray.filter((r) => {
                 const f = new Date(`${r.fecha}T00:00:00`);
                 return (
-                    f.getMonth() === nextMonth && f.getFullYear() === nextYear
+                    f.getMonth() === nextMonthIdx && f.getFullYear() === nextYear
                 );
             });
             setReservasMesSiguiente(reservasSiguiente);
@@ -563,11 +545,14 @@ const Dashboard = () => {
                         {/* TÍTULO */}
                         <div className="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
                             <h2 className="text-xl sm:text-2xl font-bold text-sky-800">
-                                {vista === "semana" && "Próximas reservas"}
+                                {vista === "semana" && t('dashboard.vista.proximas')}
+
                                 {vista === "mes" &&
-                                    `Próximas reservas — ${nombreMesActual}`}
+                                    `${t('dashboard.vista.proximas')} — ${t(`meses.${nombreMesActual}`)}`}
+
                                 {vista === "mesSiguiente" &&
-                                    `Próximas reservas — ${nombreMesSiguiente}`}{" "}
+                                    `${t('dashboard.vista.proximas')} — ${t(`meses.${nombreMesSiguiente}`)}`}
+                                {" "}
                                 (
                                 {vista === "semana"
                                     ? reservasSemanaMostrar.length
@@ -708,7 +693,7 @@ const Dashboard = () => {
             </main>
 
             <CancelarModal
-            t={t}
+                t={t}
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onConfirm={handleCancelar}

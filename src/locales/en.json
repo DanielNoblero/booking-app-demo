@@ -52,7 +52,8 @@
         "vista": {
             "semana": "Week",
             "mes": "Month",
-            "mesSiguiente": "Next month"
+            "mesSiguiente": "Next month",
+            "proximas": "Upcoming"
         },
         "lista": {
             "consultorio": "Office",
@@ -86,6 +87,51 @@
                     "costo": "Cost"
                 }
             }
+        }
+    },
+    "meses": {
+        "0": "January",
+        "1": "February",
+        "2": "March",
+        "3": "April",
+        "4": "May",
+        "5": "June",
+        "6": "July",
+        "7": "August",
+        "8": "September",
+        "9": "October",
+        "10": "November",
+        "11": "December"
+    },
+    "boton": {
+        "agendar": "Schedule",
+        "cerrarSesion": "Log out"
+    },
+    "cards": {
+        "deudaMesAnterior": "Debt {{mes}}"
+    },
+    "botones": {
+        "cancelar": "Cancel",
+        "confirmar": "Confirm",
+        "confirmando": "Confirming...",
+        "aceptar": "Accept",
+        "volver": "Back"
+    },
+    "modales": {
+        "cancelar": {
+            "titulo": "Cancel Reservation",
+            "pregunta": "Are you sure you want to cancel the reservation for",
+            "advertencia": "This action cannot be undone."
+        },
+        "recurrente": {
+            "titulo": "Delete Recurring Reservation",
+            "texto": "This reservation is part of a recurring series.",
+            "eliminarUna": "❌ Delete only this reservation",
+            "eliminarTodas": "🗑️ Delete entire series"
+        },
+        "notificacion": {
+            "exito": "Success",
+            "error": "Error"
         }
     }
 }
